@@ -1,0 +1,42 @@
+{
+    "restapi": [
+        {
+            "url": "/file/getcontent",
+            "method": "get",
+            "type":"python_func",
+            "endpoint": "entry_filesystem.py",
+            "function": "getcontent"
+        },  
+        {
+            "url": "/file/getcontent2",
+            "method": "get",
+            "type":"python",
+            "endpoint": "entry_filesystem.py"
+        },
+        {
+            "url": "/file/lsmode",
+            "method": "get",
+            "type":"bash_func",
+            "endpoint": "entry_mybash.sh",
+            "function": "lsmode"
+        },
+        {
+            "url": "/file/lsmode",
+            "method": "get",
+            "type":"bash",
+            "endpoint": "entry_mybash.sh"
+        },
+        {
+            "url": "/file/hdfs",
+            "method": "get",
+            "type":"remote",
+            "endpoint": "http://10.10.10.10/hdfs/getfile"
+        },
+        {
+            "url": "/file/hdfs",
+            "method": "get",
+            "type":"uds",
+            "endpoint": "/var/xxx.socks"
+        }            
+    ]
+}
