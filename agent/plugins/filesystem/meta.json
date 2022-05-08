@@ -4,7 +4,7 @@
             "url": "/file/getcontent",
             "method": "get",
             "type":"python_func",
-            "endpoint": "entry_filesystem.py",
+            "endpoint": "entry_filesystem",
             "function": "getcontent"
         },  
         {
