@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config.from_pyfile("master.cfg")
 db = SQLAlchemy(app)
 
 class Project(db.Model):
@@ -34,6 +35,11 @@ class Task(db.Model):
     service_method = db.Column(db.String(16)) #http方法GET，POST，PUT等
     result_type = db.Column(db.String(128))  #结果的类型，如果任务的结果内容比较多，这里可以是结果的文件路径
     result = db.Column(db.String(1024))  #任务执行的结果
+
+@app.cli.command('init')
+def init():
+    db.drop_all()
+    db.create_all()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=3000, debug=True)
