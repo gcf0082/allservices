@@ -31,22 +31,14 @@
   <div id="root" class="app-wrapper"></div>
   <script src="amis/sdk.js"></script>
   <script type="text/javascript">
-    (function () {
-      let amis = amisRequire('amis/embed');
-
-      let amisJSON = {
-        "type": "page",
-        "asideResizor": true,
-        "asideClassName": "myClass",
-        "css": {
-          ".myClass": {
-            "width": "400px"
-          }
-        },
+    function getdata() {
+      return {
+        "status": 0,
+        "msg": "成功",
         "data": {
           "options": [
             {
-              "label": "Project1x",
+              "label": "Project12",
               "value": 1,
               "children": [
                 {
@@ -55,42 +47,83 @@
                 },
                 {
                   "label": "agent5",
-                  "value": 5
+                  "value": 3
                 }
               ]
             },
             {
               "label": "Project2",
-              "value": 3,
+              "value": 4,
               "children": [
                 {
                   "label": "agent2",
-                  "value": 4
+                  "value": 5
                 }
               ]
             }
           ]
+        }
+
+      }
+    }
+    (function () {
+      let amis = amisRequire('amis/embed');
+
+      let amisJSON = {
+        "type": "page",
+
+        "asideResizor": true,
+        "asideClassName": "myClass",
+        "css": {
+          ".myClass": {
+            "width": "400px"
+          }
         },
+
         "aside": [
           {
             "type": "button",
-            "label": "刷新"
+            "label": "刷新",
+            "actionType": "reload",
+            "target": "project_list"
           },
           {
             "type": "button",
-            "label": "执行服务"
+            "label": "执行服务",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "ajax",
+                    "api": "http://127.0.0.1:2000/getdata",
+                    "messages": {
+                      "success": "成功了！欧耶",
+                      "failed": "失败了呢。。"
+                    }
+                  }
+                ]
+              }
+            }
           },
           {
             "type": "service",
+            "name": "project_list",
             "api": "/getdata",
-            "body": {
+            "data": {
+              "name": "123"
+            },
+            "body": [{
               "type": "input-tree",
               "name": "tree",
               "label": "项目列表",
               "multiple": true,
               "onlyChildren": true,
               "source": "${options}"
-            }
+            }, {
+              "label": "${tree}",
+              "type": "static"
+            }],
+
           }
         ],
         "toolbar": [
