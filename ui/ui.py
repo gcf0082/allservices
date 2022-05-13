@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from flask import Flask,jsonify
+from flask import Flask, request, jsonify
+import requests
 
 app = Flask(__name__,
             static_url_path='',
@@ -18,7 +19,7 @@ def getdata():
          "data": {
           "options": [
             {
-              "label": "Project1",
+              "label": "Project1222",
               "value": 1,
               "children": [
                 {
@@ -44,6 +45,23 @@ def getdata():
           ]
         }
 
+    })
+
+@app.route('/ui/<path:url>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def test(url):
+    newParams = request.args.copy()
+    rsp = requests.request(method=request.method, 
+    url='http://127.0.0.1:3000/rest/service/'+url,
+    params=newParams,
+    data=request.data)
+    print(rsp.json())    
+    return jsonify({
+        "status":0,
+        "msg": "成功",
+        "data":{
+            "task_id":"task_id",
+            "result":rsp.json()['data']['result']
+        }
     })
 
 if __name__ == "__main__":

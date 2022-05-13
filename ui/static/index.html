@@ -93,8 +93,8 @@
               "data": {
                 "projects": [
                   {
-                    "label": "A",
-                    "value": "a"
+                    "label": "test_project2",
+                    "value": "test_project2"
                   },
                   {
                     "label": "B",
@@ -107,22 +107,22 @@
                 ],
                 "agents": [
                   {
-                    "name": "agent1",
+                    "name": "myagent2",
                     "agent_ip": "192.168.101.52"
                   },
                   {
-                    "name": "agent2",
+                    "name": "myagent3",
                     "agent_ip": "192.168.101.53"
                   }
                 ],
                 "services": [
                   {
-                    "name": "service1",
-                    "url": "/rest/file/xxxx"
+                    "plugin_name": "filesystem",
+                    "url": "/file/getcontent"
                   },
                   {
-                    "name": "service2",
-                    "url": "/rest/file/xxxx2"
+                    "plugin_name": "filesystem",
+                    "url": "/file/lsmode"
                   }
                 ]
               },
@@ -138,8 +138,8 @@
                   "type": "picker",
                   "name": "select_agents",
                   "joinValues": true,
-                  "valueField": "agent_ip",
-                  "labelField": "agent_ip",
+                  "valueField": "name",
+                  "labelField": "name",
                   "label": "节点列表",
                   "embed": true,
                   "source": "$agents",
@@ -176,8 +176,8 @@
                     "name": "serviceList",
                     "columns": [
                       {
-                        "name": "name",
-                        "label": "服务名"
+                        "name": "plugin_name",
+                        "label": "插件名"
                       },
                       {
                         "name": "url",
@@ -198,14 +198,13 @@
                           "actionType": "ajax",
                           "args": {
                             "api": {
-                              "url": "/rest/abc?name=${select_agents}",
+                              "url": "/ui/filesystem/file/getcontent?project_name=${switch_project}&agent_names=${select_agents}",
                               "method": "get"
                             },
                             "messages": {
                               "success": "成功",
                               "failed": "失败"
-                            },
-                            "age": 18
+                            }
                           }
                         }
                       ]
