@@ -71,59 +71,11 @@
 
       let amisJSON = {
         "type": "page",
-
         "asideResizor": true,
-        "asideClassName": "myClass",
-        "css": {
-          ".myClass": {
-            "width": "400px"
-          }
-        },
-
         "aside": [
           {
-            "type": "button",
-            "label": "刷新",
-            "actionType": "reload",
-            "target": "project_list"
-          },
-          {
-            "type": "button",
-            "label": "执行服务",
-            "onEvent": {
-              "click": {
-                "actions": [
-                  {
-                    "actionType": "ajax",
-                    "api": "http://127.0.0.1:2000/getdata",
-                    "messages": {
-                      "success": "成功了！欧耶",
-                      "failed": "失败了呢。。"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "type": "service",
-            "name": "project_list",
-            "api": "/getdata",
-            "data": {
-              "name": "123"
-            },
-            "body": [{
-              "type": "input-tree",
-              "name": "tree",
-              "label": "项目列表",
-              "multiple": true,
-              "onlyChildren": true,
-              "source": "${options}"
-            }, {
-              "label": "${tree}",
-              "type": "static"
-            }],
-
+            "type": "tpl",
+            "tpl": "这是侧边栏"
           }
         ],
         "toolbar": [
@@ -134,8 +86,134 @@
         ],
         "body": [
           {
-            "type": "tpl",
-            "tpl": "这是内容区"
+            "type": "wrapper",
+            "body":
+            {
+              "type": "service",
+              "data": {
+                "projects": [
+                  {
+                    "label": "A",
+                    "value": "a"
+                  },
+                  {
+                    "label": "B",
+                    "value": "b"
+                  },
+                  {
+                    "label": "C",
+                    "value": "c"
+                  }
+                ],
+                "agents": [
+                  {
+                    "name": "agent1",
+                    "agent_ip": "192.168.101.52"
+                  },
+                  {
+                    "name": "agent2",
+                    "agent_ip": "192.168.101.53"
+                  }
+                ],
+                "services": [
+                  {
+                    "name": "service1",
+                    "url": "/rest/file/xxxx"
+                  },
+                  {
+                    "name": "service2",
+                    "url": "/rest/file/xxxx2"
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "label": "切换项目",
+                  "type": "select",
+                  "name": "switch_project",
+
+                  "source": "$projects"
+                },
+                {
+                  "type": "picker",
+                  "name": "select_agents",
+                  "joinValues": true,
+                  "valueField": "agent_ip",
+                  "labelField": "agent_ip",
+                  "label": "节点列表",
+                  "embed": true,
+                  "source": "$agents",
+                  "multiple": true,
+                  "pickerSchema": {
+                    "mode": "table",
+                    "name": "thelist",
+                    "columns": [
+                      {
+                        "name": "name",
+                        "label": "agent name"
+
+                      },
+                      {
+                        "name": "agent_ip",
+                        "label": "agent IP"
+                      }
+                    ]
+                  }
+                },
+                ,
+                {
+                  "type": "picker",
+                  "name": "select_services",
+                  "joinValues": true,
+                  "valueField": "agent_ip",
+                  "labelField": "agent_ip",
+                  "label": "选择服务",
+                  "embed": true,
+                  "source": "${services}",
+                  "multiple": true,
+                  "pickerSchema": {
+                    "mode": "table",
+                    "name": "serviceList",
+                    "columns": [
+                      {
+                        "name": "name",
+                        "label": "服务名"
+                      },
+                      {
+                        "name": "url",
+                        "label": "url"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "id": "exec_service",
+                  "label": "执行任务",
+                  "level": "primary",
+                  "onEvent": {
+                    "click": {
+                      "actions": [
+                        {
+                          "actionType": "ajax",
+                          "args": {
+                            "api": {
+                              "url": "/rest/abc?name=${select_agents}",
+                              "method": "get"
+                            },
+                            "messages": {
+                              "success": "成功",
+                              "failed": "失败"
+                            },
+                            "age": 18
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       };
