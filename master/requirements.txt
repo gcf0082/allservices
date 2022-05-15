@@ -1,9 +1,10 @@
 flask
+Flask-SQLAlchemy
 requests
 flask-socketio
 eventlet 
 aiohttp
-termios
+
 
 pytest
 pytest-html
