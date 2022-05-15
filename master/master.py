@@ -1,12 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import uuid
 import requests
-from flask_socketio import SocketIO
 
 app = Flask(__name__)
 app.config.from_pyfile("master.cfg")
-socketio = SocketIO(app)
 db = SQLAlchemy(app)
 
 class Project(db.Model):
@@ -129,31 +127,5 @@ def service(url):
         }
     })
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@socketio.on("resize", namespace="/master_ui")
-def resize(data):
-    socketio.emit("resize", data, namespace="/master_agent")
-
-@socketio.on("pty-input", namespace="/master_ui")
-def pty_input(data):
-    socketio.emit("pty-input", data, namespace="/master_agent")
-
-@socketio.on("pty-output", namespace="/master_agent")
-def pty_output(data):
-    socketio.emit("pty-output", data, namespace="/master_ui")    
-
-@socketio.on("connect", namespace="/master_ui")
-def connect_ui():
-    app.logger.info("new ui client connected")    
-
-
-@socketio.on("connect", namespace="/master_agent")
-def connect_agent():
-    app.logger.info("new agent client connected")       
-
 if __name__ == "__main__":
-    #app.run(host='0.0.0.0', port=3000, debug=True)
-    socketio.run(app, host='0.0.0.0', port=3000, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
