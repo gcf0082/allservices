@@ -72,20 +72,11 @@
       let amisJSON = {
         "type": "page",
         "asideResizor": true,
+        "asideSticky":true,
+        "asideMaxWidth":800,
+        "asideClassName": "w-auto",
         "aside": [
-          {
-            "type": "tpl",
-            "tpl": "这是侧边栏"
-          }
-        ],
-        "toolbar": [
-          {
-            "type": "tpl",
-            "tpl": "这是工具栏部分"
-          }
-        ],
-        "body": [
-          {
+        {
             "type": "wrapper",
             "body":
             {
@@ -214,6 +205,20 @@
               ]
             }
           }
+        ],
+        "toolbar": [
+          {
+            "type": "tpl",
+            "tpl": "这是工具栏部分"
+            
+          }
+        ],
+        "body": [
+        {
+            "type": "tpl",
+            "tpl": "这是内容部分"
+            
+          }          
         ]
       };
       let amisScoped = amis.embed('#root', amisJSON);
