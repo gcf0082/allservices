@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import uuid
@@ -72,6 +73,23 @@ def create_agent():
         }
     })
 
+@app.route('/rest/agent', methods= ['GET'])
+def get_all_agents():
+    project_name = request.args.get('project_name')
+    project = Project.query.filter(Project.name==project_name).first()
+    agents = Agent.query.filter(Project.id==project.id).all()  
+    tmplist = []
+    for agent in agents:
+        tmplist.append({"name":agent.name, "ip":agent.ip, "port":agent.port, "project_id":agent.project_id})
+
+    return jsonify({
+        "status":0,
+        "msg": "获取所有agent成功",
+        "data":{
+            "agents": tmplist
+        }
+    })    
+
 
 @app.route('/rest/project',methods = ['POST'])
 def create_project():    
@@ -124,6 +142,72 @@ def service(url):
         "data":{
             "task_id":task_id,
             "result":rsp.json()['data']['result']
+        }
+    })
+
+@app.route('/api/webhook/result', methods=['POST'])
+def webhook_set_work_result():
+    print('requests.data:')
+    print(request.json)
+    work_id = request.args.get('work_id')
+    Work.query.filter(Work.id == work_id).update({'result':json.dumps(request.json)})
+    db.session.commit() 
+    return 'ok'    
+
+@app.route('/rest/task/status', methods=['GET'])
+def get_task_status():
+    return jsonify({
+        "status":0,
+        "msg": "成功",
+        "data":{
+            "task_id":'task_id',
+            "status":[
+                {
+                    "work_id":"work_id1",
+                    "status":"ok"
+                },
+                    {
+                    "work_id":"work_id2",
+                    "status":"failed"
+                }
+            ]
+        }
+    })
+
+@app.route('/rest/task/result', methods=['GET'])
+def get_task_result():
+    return jsonify({
+        "status":0,
+        "msg": "成功",
+        "data":{
+            "task_id":'task_id',
+            "result":[
+                {
+                    "work_id":"work_id1",
+                    "result":"xxxx",
+                    "status":"ok"
+                },
+                    {
+                    "work_id":"work_id2",
+                    "result":"yyyyy",
+                    "status":"failed"
+                }
+            ]
+        }
+    })
+
+@app.route('/rest/work/result', methods=['GET'])
+def get_work_result():
+    work_id = request.args.get('work_id')
+    work = Work.query.filter(Work.id == work_id).first()
+    print(work.result)
+    return jsonify({
+        "status":0,
+        "msg": "成功",
+        "data":{
+            "task_id":'task_id',
+            "work_id":'work_id',
+            "result":json.loads(work.result)
         }
     })
 

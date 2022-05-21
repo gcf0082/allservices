@@ -122,8 +122,9 @@
                   "label": "切换项目",
                   "type": "select",
                   "name": "switch_project",
-
-                  "source": "$projects"
+                  "placeholder": "选择项目",
+                  "source": "$projects",
+                  "value":"test_project2"
                 },
                 {
                   "type": "picker",
@@ -133,7 +134,7 @@
                   "labelField": "name",
                   "label": "节点列表",
                   "embed": true,
-                  "source": "$agents",
+                  "source": "/rest/agent?project_name=project1",
                   "multiple": true,
                   "pickerSchema": {
                     "mode": "table",
@@ -145,7 +146,7 @@
 
                       },
                       {
-                        "name": "agent_ip",
+                        "name": "ip",
                         "label": "agent IP"
                       }
                     ]
