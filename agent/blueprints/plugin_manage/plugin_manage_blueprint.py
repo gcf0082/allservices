@@ -21,7 +21,8 @@ def service(url):
         "status":0,
         "msg": "成功",
         "data":{
-            'result':result
+            "work_id":work_id,
+            "result":result
         }
     })    
 

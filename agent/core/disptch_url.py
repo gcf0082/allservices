@@ -34,7 +34,7 @@ def dispatch(plugin_name, url, work_id, context=None):
             t = threading.Thread(target=runService, args=(callit,work_id,), name='run service')   
             t.start()
             t.join(2)
-            #如果线程未结束暂时无法获取结果信息，只要结束了才有结果信息
+            #如果线程未结束暂时无法获取结果信息，只有结束了才有结果信息
             if t.is_alive():
                 pass
             else:

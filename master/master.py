@@ -112,6 +112,7 @@ def service(url):
     agents = Agent.query.filter(Project.id == project.id).all()
     agents_handled = []
     task_id = str(uuid.uuid4())
+    result = []
     for agent in agents:
         if agent.name in agent_names:
             agents_handled.append(agent.name)
@@ -133,7 +134,7 @@ def service(url):
             url='http://' + agent.ip + ':' + str(agent.port) +'/service/'+url,
             params=newParams,
             data=request.data)
-            print(rsp.json())
+            result.append({"work_id":rsp.json()["data"]["work_id"], "result":rsp.json()["data"]["result"]})
     
     
     return jsonify({
@@ -141,7 +142,7 @@ def service(url):
         "msg": "成功",
         "data":{
             "task_id":task_id,
-            "result":rsp.json()['data']['result']
+            "result":result
         }
     })
 
