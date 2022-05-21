@@ -33,8 +33,6 @@ class Agent_Service(db.Model):
     
 class Task(db.Model):
     id = db.Column(db.String(64), primary_key=True)
-    service_id = db.Column(db.Integer)
-    agent_id = db.Column(db.Integer)
     status = db.Column(db.String(64))
 
 class Work(db.Model):    
@@ -112,12 +110,12 @@ def service(url):
     agents = Agent.query.filter(Project.id == project.id).all()
     agents_handled = []
     task_id = str(uuid.uuid4())
+    task = Task(id=task_id)
+    db.session.add(task)
     result = []
     for agent in agents:
         if agent.name in agent_names:
-            agents_handled.append(agent.name)
-            task = Task(id=task_id, agent_id=agent.id)
-            db.session.add(task)
+            agents_handled.append(agent.name)                   
             work = Work(id=str(uuid.uuid4()), task_id=task_id, status="created")
             db.session.add(work)
             db.session.commit()
